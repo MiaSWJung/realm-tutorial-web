@@ -16,7 +16,11 @@ function useTeamMembers() {
   const [newUserEmailError, setNewUserEmailError] = React.useState(null);
   const app = useRealmApp();
   // TODO: Import the Realm functions: addTeamMember, removeTeamMember, and getMyTeamMembers
+  const {addTeamMember, removeTeamMember, getMyTeamMembers} = app.functions;
   // TODO: Implement the function updateTeamMembers so that it calls getMyTeamMembers and updates
+  const updateTeamMembers = () => {
+    getMyTeamMembers().then(setTeamMembers);
+  }
   // the team variable with the current team members.
   // display team members on load
   React.useEffect(updateTeamMembers, []);
@@ -24,8 +28,21 @@ function useTeamMembers() {
     teamMembers,
     errorMessage: newUserEmailError,
     // TODO: Call the addTeamMember() function and return updateTeamMembers if
+    addTeamMember: async (email) => {
+      const{error} = await addTeamMember(email)
+      if(error){
+        setNewUserEmailError(error);
+        return {error}
+      }else {
+        updateTeamMembers();
+      }
+    },
     // addTeamMember() was successful.
     // TODO: Call the removeTeamMember()
+    removeTeamMember: async (email) =>{
+      await removeTeamMember(email);
+      updateTeamMembers();
+    }
   };
 }
 
