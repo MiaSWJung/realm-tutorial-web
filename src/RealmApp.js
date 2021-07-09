@@ -15,7 +15,7 @@ export const useRealmApp = () => {
 
 export const RealmAppProvider = ({ appId, children }) => {
   // TODO: Wrap the Realm.App object with React state.
-  const [app,setApp] = React.useState(new Realm.app(appId))
+  const [app,setApp] = React.useState(new Realm.App(appId))
   React.useEffect(() => {
     setApp(new Realm.App(appId));
   }, [appId]);
